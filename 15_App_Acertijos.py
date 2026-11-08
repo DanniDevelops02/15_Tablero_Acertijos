@@ -237,37 +237,64 @@ h2, h3 { font-family: 'Playfair Display', serif !important; color: __OSCURO__ !i
 [class*="st-key-tarjeta"] p, [class*="st-key-tarjeta"] label, [class*="st-key-tarjeta"] li,
 [class*="st-key-tarjeta"] [data-testid="stWidgetLabel"] * { color: __OSCURO__ !important; }
 
-/* ---- Campos, selectores, desplegables y avisos: siempre claros ---- */
-div[data-baseweb="input"], div[data-baseweb="base-input"], div[data-baseweb="textarea"],
-div[data-baseweb="select"] > div, div[data-baseweb="input"] input, div[data-baseweb="base-input"] input,
-.stTextInput input, .stTextArea textarea {
-    background-color: #ffffff !important; border-color: __SUAVE__ !important;
+/* ---- Campos, selectores, desplegables y avisos: siempre claros (a prueba de modo oscuro) ---- */
+[data-testid="stTextInput"] [data-baseweb="input"],
+[data-testid="stTextArea"] [data-baseweb="textarea"],
+[data-testid="stSelectbox"] [data-baseweb="select"] > div {
+    background-color: #ffffff !important; border: 1px solid __SUAVE__ !important;
+    border-radius: 12px !important; box-shadow: none !important;
 }
-div[data-baseweb="input"] input, div[data-baseweb="base-input"] input, textarea,
-div[data-baseweb="select"] div, div[data-baseweb="select"] span, div[data-baseweb="select"] input {
-    color: __OSCURO__ !important; -webkit-text-fill-color: __OSCURO__ !important;
+[data-testid="stSelectbox"] [data-baseweb="select"] { background-color: #ffffff !important; border-radius: 12px !important; }
+/* Todo lo que hay dentro de un campo: sin fondo propio y con texto oscuro */
+[data-testid="stTextInput"] [data-baseweb="input"] *,
+[data-testid="stTextArea"] [data-baseweb="textarea"] *,
+[data-testid="stSelectbox"] [data-baseweb="select"] > div * {
+    background-color: transparent !important; border-color: transparent !important; box-shadow: none !important;
+    color: __OSCURO__ !important; -webkit-text-fill-color: __OSCURO__ !important; fill: __OSCURO__ !important;
 }
-input::placeholder, textarea::placeholder { color: #7d93a8 !important; -webkit-text-fill-color: #7d93a8 !important; opacity: 1; }
-div[data-baseweb="input"], div[data-baseweb="select"] > div, div[data-baseweb="textarea"] { border-radius: 12px !important; border: 1px solid __SUAVE__ !important; }
-div[data-baseweb="input"] button { background: transparent !important; color: __OSCURO__ !important; }
-div[data-baseweb="input"] svg, div[data-baseweb="select"] svg { fill: __OSCURO__ !important; color: __OSCURO__ !important; }
-div[data-baseweb="popover"] > div, div[data-baseweb="popover"] ul, div[data-baseweb="menu"], ul[role="listbox"] {
-    background-color: #ffffff !important; border-radius: 12px;
+[data-testid="stTextInput"] [data-baseweb="input"]:focus-within,
+[data-testid="stTextArea"] [data-baseweb="textarea"]:focus-within,
+[data-testid="stSelectbox"] [data-baseweb="select"] > div:focus-within {
+    border-color: __PRIMARIO__ !important; box-shadow: 0 0 0 1px __PRIMARIO__ !important;
 }
-div[data-baseweb="popover"] li, [role="option"] { background-color: #ffffff !important; color: __OSCURO__ !important; }
-div[data-baseweb="popover"] li *, [role="option"] * { color: __OSCURO__ !important; }
-div[data-baseweb="popover"] li:hover, [role="option"]:hover, li[aria-selected="true"] { background-color: __CLARO__ !important; }
+[data-testid="stTextInput"] input::placeholder, [data-testid="stTextArea"] textarea::placeholder {
+    color: #7d93a8 !important; -webkit-text-fill-color: #7d93a8 !important; opacity: 1;
+}
+/* Lista que se abre al pulsar un selector */
+[data-baseweb="popover"] *, ul[role="listbox"] * {
+    background-color: #ffffff !important; color: __OSCURO__ !important; -webkit-text-fill-color: __OSCURO__ !important;
+}
+[data-baseweb="popover"] li:hover, [data-baseweb="popover"] li:hover *,
+[role="option"][aria-selected="true"], [role="option"][aria-selected="true"] * { background-color: __CLARO__ !important; }
 
-[data-testid="stAlert"] { background-color: __CLARO__ !important; border: 1px solid __SUAVE__; border-radius: 14px !important; }
-[data-testid="stAlert"] * { color: __OSCURO__ !important; }
-[data-testid="stAlert"]:has([data-testid="stAlertContentWarning"]) { background-color: #fff6e0 !important; border-color: #f2d08a; }
-[data-testid="stAlert"]:has([data-testid="stAlertContentError"]) { background-color: #fdecec !important; border-color: #f0b4b4; }
-[data-testid="stAlert"]:has([data-testid="stAlertContentSuccess"]) { background-color: #e8f6ef !important; border-color: #a6d8bf; }
+/* Avisos (st.info, st.warning, st.error, st.success) */
+[data-testid="stAlert"] { --alerta-fondo: __CLARO__; --alerta-borde: __SUAVE__; }
+[data-testid="stAlert"]:has([data-testid="stAlertContentWarning"]) { --alerta-fondo: #fff6e0; --alerta-borde: #f2d08a; }
+[data-testid="stAlert"]:has([data-testid="stAlertContentError"]) { --alerta-fondo: #fdecec; --alerta-borde: #f0b4b4; }
+[data-testid="stAlert"]:has([data-testid="stAlertContentSuccess"]) { --alerta-fondo: #e8f6ef; --alerta-borde: #a6d8bf; }
+[data-testid="stAlert"] {
+    background-color: var(--alerta-fondo) !important; border: 1px solid var(--alerta-borde) !important;
+    border-radius: 14px !important; overflow: hidden;
+}
+[data-testid="stAlert"] > div, [data-testid="stAlert"] [data-baseweb="notification"] {
+    background-color: var(--alerta-fondo) !important; border: none !important; border-radius: 14px !important;
+}
+[data-testid="stAlert"] * { color: __OSCURO__ !important; -webkit-text-fill-color: __OSCURO__ !important; }
+[data-testid="stAlert"] p, [data-testid="stAlert"] span, [data-testid="stAlert"] div { background-color: transparent !important; }
 
-[data-testid="stExpander"] details { background-color: #ffffff !important; border: 1px solid __SUAVE__88 !important; border-radius: 16px !important; box-shadow: 0 8px 24px rgba(63, 113, 166, .08); }
-[data-testid="stExpander"] summary, [data-testid="stExpander"] summary *,
+/* Desplegables (st.expander): la barra del título también es clara */
+[data-testid="stExpander"] details {
+    background-color: #ffffff !important; border: 1px solid __SUAVE__88 !important; border-radius: 16px !important;
+    box-shadow: 0 8px 24px rgba(63, 113, 166, .08); overflow: hidden;
+}
+[data-testid="stExpander"] summary { background-color: #ffffff !important; }
+[data-testid="stExpander"] summary:hover { background-color: __CLARO__ !important; }
+[data-testid="stExpander"] summary * { background-color: transparent !important; color: __OSCURO__ !important; fill: __OSCURO__ !important; }
 [data-testid="stExpander"] p, [data-testid="stExpander"] li, [data-testid="stExpander"] label { color: __OSCURO__ !important; }
 [data-testid="stExpander"] svg { fill: __OSCURO__ !important; color: __OSCURO__ !important; }
+
+/* El menú con el cambio de tema se oculta: esta página está diseñada solo en claro */
+[data-testid="stMainMenu"] { display: none !important; }
 
 /* Botones */
 .stButton > button {
